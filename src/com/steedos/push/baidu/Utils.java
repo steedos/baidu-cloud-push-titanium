@@ -1,4 +1,4 @@
-package ti.baidu.push;
+package com.steedos.push.baidu;
 
 import android.content.Context;
 import android.content.SharedPreferences;

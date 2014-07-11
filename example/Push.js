@@ -6,7 +6,7 @@ Push.prototype = {
   registerBaidu : function() {
     var self = this;
 
-    var baiduPush = require('ti.baidu.push');
+    var baiduPush = require('com.steedos.push.baidu');
 
     Ti.API.info("registerBaidu start ...");
 

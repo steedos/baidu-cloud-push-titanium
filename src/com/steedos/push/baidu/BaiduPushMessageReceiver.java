@@ -1,4 +1,4 @@
-package ti.baidu.push;
+package com.steedos.push.baidu;
 
 import java.util.HashMap;
 import java.util.List;

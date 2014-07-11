@@ -21,7 +21,7 @@ win.add(label);
 win.open();
 
 // TODO: write your module tests here
-var push = require('ti.baidu.push');
+var push = require('com.steedos.push.baidu');
 Ti.API.info("module is => " + push);
 
 label.text = push.example();

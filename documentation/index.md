@@ -8,7 +8,7 @@ TODO: Enter your module description here
 
 To access this module from JavaScript, you would do the following:
 
-	var push = require("ti.baidu.push");
+	var push = require("com.steedos.push.baidu");
 
 The push variable is a reference to the Module object.	
 

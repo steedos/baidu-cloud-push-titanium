@@ -3,6 +3,7 @@
 		Ant build script for Titanium Android module push
 	</description>
 
+  <property environment="env"/>
 	<property name="ti.module.root" location="${basedir}"/>
 	<property file="build.properties" />
 

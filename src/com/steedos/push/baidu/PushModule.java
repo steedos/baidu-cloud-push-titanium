@@ -6,7 +6,7 @@
  * Please see the LICENSE included with this distribution for details.
  *
  */
-package ti.baidu.push;
+package com.steedos.push.baidu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,7 +34,7 @@ import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
 import com.baidu.android.silentupdate.SilentManager;
 
-@Kroll.module(name = "Push", id = "ti.baidu.push")
+@Kroll.module(name = "Push", id = "com.steedos.push.baidu")
 public class PushModule extends KrollModule {
 
 	private static PushModule _THIS;
@@ -106,7 +106,7 @@ public class PushModule extends KrollModule {
 
 	@Kroll.method
 	public String getApiKey() {
-		return TiApplication.getInstance().getAppProperties().getString("api_key", "");
+		return TiApplication.getInstance().getAppProperties().getString("com.steedos.push.baidu.api_key", "");
 	}
 
 	/**

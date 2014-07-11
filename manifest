@@ -4,15 +4,15 @@
 #
 version: 0.1
 apiversion: 2
-description: Titanium android push, use baidu cloud push.
-author: Luowei
+description: Titanium module for Baidu Cloud Push service because GCM is disabled in china.
+author: Luo Wei
 license: Specify your license
 copyright: Copyright (c) 2014 by Your Company
 
 
 # these should not be edited
 name: push
-moduleid: ti.baidu.push
-guid: 96690feb-31f2-470f-8bef-e007b1c01ad4
+moduleid: com.steedos.push.baidu
+guid: 550f6cde-fd1e-4e24-b9d2-7d68b4d50d1c
 platform: android
 minsdk: 3.2.3.GA

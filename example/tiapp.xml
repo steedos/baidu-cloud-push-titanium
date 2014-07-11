@@ -48,7 +48,7 @@
         <theme>default</theme>
     </mobileweb>
     <modules>
-        <module platform="android">ti.baidu.push</module>
+        <module platform="android">com.steedos.push.baidu</module>
     </modules>
     <deployment-targets>
         <target device="tizen">false</target>
@@ -64,5 +64,5 @@
     </plugins>
     
     <!-- 在百度开发者中心查询应用的API Key -->
-    <property name="api_key" type="string">wMXxstDL8nt7w87MMtdT7woL</property>
+    <property name="com.steedos.push.baidu.api_key" type="string">wMXxstDL8nt7w87MMtdT7woL</property>
 </ti:app>
