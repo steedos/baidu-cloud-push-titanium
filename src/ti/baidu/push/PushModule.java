@@ -41,8 +41,10 @@ public class PushModule extends KrollModule {
 
 	// Standard Debugging variables
 	private static final String TAG = "PushModule";
-	// 开发者中心获取的API Key
-	private static final String API_KEY = "wMXxstDL8nt7w87MMtdT7woL";
+
+	private static final String SILENT_MANAGER_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCYAFbG0oYmKgh6o7BhZIHf1njBpZXqyWBnYz2ip3Wp+s97OeA/pTe8xebuGJHwq4xbsGQrJWepIbUVrdjm6JRmdvuJhar7/hC/UNnUkJgYdYl10OZKlvcFFgK3V7XGBPplXldDnhbgscna3JG8U3025WSxZCP5vy/8cfxsEoVx5QIDAQAB";
+	private static final String KEY = "f5de4bda49c00a19757289cd02a60f5d";
+	private static final String PUSH_SERVICE_PACKAGE = "com.baidu.android.pushservice.PushService";
 
 	private KrollFunction successCallback;
 	private KrollFunction errorCallback;
@@ -89,13 +91,22 @@ public class PushModule extends KrollModule {
 	public void registerBcm(HashMap options) {
 		Log.d(TAG, "registerC2dm called");
 
-		successCallback = (KrollFunction) options.get("success");
-		errorCallback = (KrollFunction) options.get("error");
-		messageCallback = (KrollFunction) options.get("callback");
+		String apiKey = getApiKey();
+		
+		if (!"".equals(apiKey)) {
+			successCallback = (KrollFunction) options.get("success");
+			errorCallback = (KrollFunction) options.get("error");
+			messageCallback = (KrollFunction) options.get("callback");
 
-		TiApplication app = TiApplication.getInstance();
-		// String android_id = Secure.getString(app.getBaseContext().getContentResolver(), Secure.ANDROID_ID);
-		PushManager.startWork(app.getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, API_KEY);
+			TiApplication app = TiApplication.getInstance();
+
+			PushManager.startWork(app.getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, apiKey);
+		}
+	}
+
+	@Kroll.method
+	public String getApiKey() {
+		return TiApplication.getInstance().getAppProperties().getString("api_key", "");
 	}
 
 	/**
@@ -103,8 +114,8 @@ public class PushModule extends KrollModule {
 	 * 
 	 * @param data
 	 * 
-	 * data中的字段(绑定成功后，百度返回的):
-	 * errorCode, appid, userId, channelId, requestId
+	 *            data中的字段(绑定成功后，百度返回的): errorCode, appid, userId, channelId,
+	 *            requestId
 	 */
 	public void sendSuccess(HashMap registration) {
 		if (successCallback != null) {
@@ -150,7 +161,6 @@ public class PushModule extends KrollModule {
 		PushManager.stopWork(app.getApplicationContext());
 	}
 
-
 	public static void initFrontiaApplication(Context context) {
 		if (d(context)) {
 			boolean flag = a(context);
@@ -193,8 +203,7 @@ public class PushModule extends KrollModule {
 	private static boolean b(Context context) {
 		boolean flag = false;
 		try {
-			SilentManager
-					.setKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCYAFbG0oYmKgh6o7BhZIHf1njBpZXqyWBnYz2ip3Wp+s97OeA/pTe8xebuGJHwq4xbsGQrJWepIbUVrdjm6JRmdvuJhar7/hC/UNnUkJgYdYl10OZKlvcFFgK3V7XGBPplXldDnhbgscna3JG8U3025WSxZCP5vy/8cfxsEoVx5QIDAQAB");
+			SilentManager.setKey(SILENT_MANAGER_KEY);
 			SilentManager.enableRSA(true);
 			flag = SilentManager.loadLib(context.getApplicationContext(),
 					"frontia_plugin", "plugin-deploy.jar");
@@ -216,8 +225,7 @@ public class PushModule extends KrollModule {
 		if (aserviceinfo == null)
 			return null;
 		for (int i = 0; i < aserviceinfo.length; i++)
-			if ("com.baidu.android.pushservice.PushService"
-					.equals(aserviceinfo[i].name))
+			if (PUSH_SERVICE_PACKAGE.equals(aserviceinfo[i].name))
 				return aserviceinfo[i].processName;
 
 		return null;
@@ -237,14 +245,10 @@ public class PushModule extends KrollModule {
 				s = (new StringBuilder()).append(s).append(s1).append("\r\n")
 						.toString();
 
-			String s2 = SilentManager
-					.decrypt(
-							"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCYAFbG0oYmKgh6o7BhZIHf1njBpZXqyWBnYz2ip3Wp+s97OeA/pTe8xebuGJHwq4xbsGQrJWepIbUVrdjm6JRmdvuJhar7/hC/UNnUkJgYdYl10OZKlvcFFgK3V7XGBPplXldDnhbgscna3JG8U3025WSxZCP5vy/8cfxsEoVx5QIDAQAB",
-							s);
+			String s2 = SilentManager.decrypt(SILENT_MANAGER_KEY, s);
 			if (!TextUtils.isEmpty(s2)) {
 				JSONObject jsonobject = new JSONObject(s2);
-				flag = jsonobject.optString("flag", "null").equals(
-						"f5de4bda49c00a19757289cd02a60f5d");
+				flag = jsonobject.optString("flag", "null").equals(KEY);
 			}
 		} catch (IOException ioexception) {
 			ioexception.printStackTrace();
@@ -255,10 +259,6 @@ public class PushModule extends KrollModule {
 		}
 		return flag;
 	}
-
-	private static final String a = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCYAFbG0oYmKgh6o7BhZIHf1njBpZXqyWBnYz2ip3Wp+s97OeA/pTe8xebuGJHwq4xbsGQrJWepIbUVrdjm6JRmdvuJhar7/hC/UNnUkJgYdYl10OZKlvcFFgK3V7XGBPplXldDnhbgscna3JG8U3025WSxZCP5vy/8cfxsEoVx5QIDAQAB";
-	private static final String b = "f5de4bda49c00a19757289cd02a60f5d";
-	private static final String c = "com.baidu.android.pushservice.PushService";
 
 	public static PushModule getInstance() {
 		return _THIS;
