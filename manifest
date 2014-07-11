@@ -1,0 +1,18 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 0.1
+apiversion: 2
+description: Titanium android push, use baidu cloud push.
+author: Luowei
+license: Specify your license
+copyright: Copyright (c) 2014 by Your Company
+
+
+# these should not be edited
+name: push
+moduleid: ti.baidu.push
+guid: 96690feb-31f2-470f-8bef-e007b1c01ad4
+platform: android
+minsdk: 3.2.3.GA
