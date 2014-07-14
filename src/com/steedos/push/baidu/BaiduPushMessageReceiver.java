@@ -34,6 +34,9 @@ public class BaiduPushMessageReceiver extends FrontiaPushMessageReceiver {
 			data.put("requestId", requestId);
 
 			PushModule.getInstance().sendSuccess(data);
+		} else {
+			Utils.setBind(context, false);
+			PushModule.getInstance().sendError("绑定到百度失败，errorCode：" + errorCode);
 		}
 	}
 

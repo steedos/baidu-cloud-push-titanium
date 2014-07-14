@@ -101,6 +101,9 @@ public class PushModule extends KrollModule {
 			TiApplication app = TiApplication.getInstance();
 
 			PushManager.startWork(app.getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, apiKey);
+		} else {
+			errorCallback = (KrollFunction) options.get("error");
+			sendError("您还未配置百度应用的api_key。");
 		}
 	}
 
