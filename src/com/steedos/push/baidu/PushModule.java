@@ -49,6 +49,7 @@ public class PushModule extends KrollModule {
 	private KrollFunction successCallback;
 	private KrollFunction errorCallback;
 	private KrollFunction messageCallback;
+	private KrollFunction notificationClickCallback;
 
 	// You can define constants with @Kroll.constant, for example:
 	// @Kroll.constant public static final String EXTERNAL_NAME = value;
@@ -96,7 +97,8 @@ public class PushModule extends KrollModule {
 		if (!"".equals(apiKey)) {
 			successCallback = (KrollFunction) options.get("success");
 			errorCallback = (KrollFunction) options.get("error");
-			messageCallback = (KrollFunction) options.get("callback");
+			messageCallback = (KrollFunction) options.get("messageCallback");
+			notificationClickCallback = (KrollFunction) options.get("notificationClickCallback");
 
 			TiApplication app = TiApplication.getInstance();
 
@@ -153,6 +155,20 @@ public class PushModule extends KrollModule {
 			data.put("data", messageData);
 
 			messageCallback.call(getKrollObject(), data);
+		}
+	}
+	
+	/**
+	 * 发送推送消息时，将接受到的消息反馈到前台
+	 * 
+	 * @param messageData
+	 */
+	public void sendNotification(HashMap messageData) {
+		if (notificationClickCallback != null) {
+			HashMap data = new HashMap();
+			data.put("data", messageData);
+
+			notificationClickCallback.call(getKrollObject(), data);
 		}
 	}
 

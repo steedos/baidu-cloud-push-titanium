@@ -66,18 +66,14 @@ public class BaiduPushMessageReceiver extends FrontiaPushMessageReceiver {
 
 		HashMap data = new HashMap();
 		data.put("message", message);
-		data.put("customContentString", customContentString);
 		
 		// 自定义内容获取方式，mykey和myvalue对应透传消息推送时自定义内容中设置的键和值
 		if (!TextUtils.isEmpty(customContentString)) {
 			JSONObject customJson = null;
 			try {
 				customJson = new JSONObject(customContentString);
-				String myvalue = null;
-				if (customJson.isNull("mykey")) {
-					myvalue = customJson.getString("mykey");
-
-					data.put("myvalue", myvalue);
+				if (customJson.has("badge") && !customJson.isNull("badge")) {
+					data.put("badge", customJson.getString("badge"));
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -95,20 +91,25 @@ public class BaiduPushMessageReceiver extends FrontiaPushMessageReceiver {
 				+ description + "\" customContent=" + customContentString;
 		Log.d(TAG, notifyString);
 
+		HashMap data = new HashMap();
+		data.put("title", title);
+		data.put("description", description);
+		
 		// 自定义内容获取方式，mykey和myvalue对应通知推送时自定义内容中设置的键和值
 		if (!TextUtils.isEmpty(customContentString)) {
 			JSONObject customJson = null;
 			try {
 				customJson = new JSONObject(customContentString);
-				String myvalue = null;
-				if (customJson.isNull("mykey")) {
-					myvalue = customJson.getString("mykey");
+				if (customJson.has("badge") && !customJson.isNull("badge")) {
+					data.put("badge", customJson.getString("badge"));
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		
+		PushModule.getInstance().sendNotification(data);
 	}
 
 	@Override
